@@ -1,0 +1,23 @@
+
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "gcc - Build and debug active file",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "/Users/gabdoush/Desktop/philos/philo",
+			"args": ["4", "310000000", "200", "100"],
+			"stopAtEntry": false,
+			"externalConsole": false,
+			"cwd": "/Users/gabdoush/Desktop/philos",
+			"logging": {
+				"moduleLoad": true,
+				"trace": false ,
+				"programOutput": true},
+			"environment": [],
+			"MIMode": "lldb",
+			"preLaunchTask": "Build"
+		}
+	]
+}
