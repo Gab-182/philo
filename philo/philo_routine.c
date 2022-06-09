@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 06:14:28 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/08 20:04:13 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:47:54 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*============================================================================*/
 int	still_alive(t_ph_d *ph_d)
 {
-	unsigned int from_last_meal;
+	unsigned int	from_last_meal;
 
 	pthread_mutex_lock(ph_d->pro_d->death);
 	if (ph_d->pro_d->stop != 0 || ph_d->meals == ph_d->req_meals)
@@ -30,7 +30,7 @@ int	still_alive(t_ph_d *ph_d)
 	{
 		pthread_mutex_lock(ph_d->pro_d->death);
 		printing_state(ph_d, ": died Xx*___💀💀💀___*xX", R);
-		ph_d->pro_d->stop = 1; 
+		ph_d->pro_d->stop = 1;
 		pthread_mutex_unlock(ph_d->pro_d->death);
 		return (0);
 	}
