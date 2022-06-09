@@ -6,13 +6,20 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 04:45:35 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/08 20:46:52 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:21:54 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /*============================================================================*/
+/**
+ * @brief Change the forks state to the philo id (position) and then
+ * print the states, increase the meals, reset the death timer.
+ * 
+ * @param ph_d 
+ * @param flag 
+ */
 static void	start_eating(t_ph_d *ph_d, int flag)
 {
 	ph_d->pro_d->forks_state[ph_d->right_fork] = ph_d->philo_pos;
@@ -36,8 +43,14 @@ static void	start_eating(t_ph_d *ph_d, int flag)
 }
 
 /*============================================================================*/
+/**
+ * @brief Resetting the statue of the forks to (0) after finish eating.
+ * 
+ * @param ph_d 
+ */
 static void	return_forks(t_ph_d *ph_d)
 {
+	handle_greedy_philo_eat(ph_d);
 	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	ph_d->pro_d->forks_state[ph_d->left_fork] = 0;
 	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
@@ -51,22 +64,25 @@ static int	one_way(t_ph_d *ph_d)
 {
 	if (!still_alive(ph_d))
 		return (0);
-	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
-	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
-	if (ph_d->pro_d->forks_state[ph_d->right_fork] == 0
-		&& ph_d->pro_d->forks_state[ph_d->left_fork] == 0)
+	if (!check_greedy(ph_d))
 	{
-		start_eating(ph_d, 1);
-		return_forks(ph_d);
-		if (!sleeping_thinking(ph_d))
-			return (0);
-	}
-	else
-	{
-		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
-		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
-		if (!still_alive(ph_d))
-			return (0);
+		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
+		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
+		if (ph_d->pro_d->forks_state[ph_d->right_fork] == 0
+			&& ph_d->pro_d->forks_state[ph_d->left_fork] == 0)
+		{
+			start_eating(ph_d, 1);
+			return_forks(ph_d);
+			if (!sleeping_thinking(ph_d))
+				return (0);
+		}
+		else
+		{
+			pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
+			pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+			if (!still_alive(ph_d))
+				return (0);
+		}
 	}
 	return (1);
 }
@@ -76,22 +92,25 @@ static int	other_way(t_ph_d *ph_d)
 {
 	if (!still_alive(ph_d))
 		return (0);
-	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
-	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
-	if (ph_d->pro_d->forks_state[ph_d->right_fork] == 0
-		&& ph_d->pro_d->forks_state[ph_d->left_fork] == 0)
+	if (!check_greedy(ph_d))
 	{
-		start_eating(ph_d, 2);
-		return_forks(ph_d);
-		if (!sleeping_thinking(ph_d))
-			return (0);
-	}
-	else
-	{
-		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
-		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
-		if (!still_alive(ph_d))
-			return (0);
+		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
+		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
+		if (ph_d->pro_d->forks_state[ph_d->right_fork] == 0
+			&& ph_d->pro_d->forks_state[ph_d->left_fork] == 0)
+		{
+			start_eating(ph_d, 2);
+			return_forks(ph_d);
+			if (!sleeping_thinking(ph_d))
+				return (0);
+		}
+		else
+		{
+			pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+			pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
+			if (!still_alive(ph_d))
+				return (0);
+		}
 	}
 	return (1);
 }

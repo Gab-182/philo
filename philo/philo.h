@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:00 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/08 17:51:40 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:18:32 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_pro_d
 	unsigned int			start_time;
 	int						meals_to_eat;
 	int						*forks_state;
+	pthread_mutex_t			*greedy_mutex;
+	int						*greedy_forks;
 	int						stop;
 }			t_pro_d;
 
@@ -80,6 +82,7 @@ void			usleep_pro(unsigned int time_to_delay);
 unsigned int	action_time(void);
 void			destroy_free(t_pro_d *pro_d);
 void			printing_state(t_ph_d *ph_d, char *state, char *color);
+void			handle_greedy_philo_eat(t_ph_d *ph_d);
 
 /*-------------------------   philo.c   --------------------------------------*/
 int				philosopher(t_pro_d *pro_d);
@@ -92,6 +95,7 @@ void			move_to_struct(char **argv, t_pro_d *pro_d);
 int				eating(t_ph_d *ph_d);
 
 /*---------------------   philo_routine.c   ----------------------------------*/
+int				check_greedy(t_ph_d *ph_d);
 int				still_alive(t_ph_d *ph_d);
 int				sleeping_thinking(t_ph_d *ph_d);
 void			*philo_routine(void *arg);

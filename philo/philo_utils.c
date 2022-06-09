@@ -6,11 +6,21 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 10:26:15 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/08 17:45:57 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:12:19 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	handle_greedy_philo_eat(t_ph_d *ph_d)
+{
+	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
+	ph_d->pro_d->greedy_forks[ph_d->left_fork] = ph_d->philo_pos;
+	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
+	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
+	ph_d->pro_d->greedy_forks[ph_d->right_fork] = ph_d->philo_pos;
+	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+}
 
 /*============================================================================*/
 void	printing_state(t_ph_d *ph_d, char *state, char *color)

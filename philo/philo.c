@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:08 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/08 17:39:24 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:55:55 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ static int	allocate_memory(t_pro_d *pro_d)
 	pro_d->printing_mutex = malloc(sizeof(pthread_mutex_t));
 	pro_d->death = malloc(sizeof(pthread_mutex_t));
 	pro_d->forks_state = ft_calloc(sizeof(int), pro_d->philos_num);
-	if (!pro_d->ph_d || !pro_d->philo_thread
-		|| !pro_d->forks || !pro_d->printing_mutex
+	pro_d->greedy_mutex = malloc(sizeof(pthread_mutex_t));
+	pro_d->greedy_forks = ft_calloc(sizeof(int), pro_d->philos_num);
+	if (!pro_d->ph_d || !pro_d->philo_thread || !pro_d->greedy_forks
+		|| !pro_d->forks || !pro_d->printing_mutex || !pro_d->greedy_mutex
 		|| !pro_d->death ||!pro_d->forks_state)
 	{
 		ft_putstr_fd("Allocation failed\n", 2);
@@ -58,12 +60,9 @@ static int	initialize_forks_mutexes(t_pro_d *pro_d)
 		}
 		i++;
 	}
-	if (pthread_mutex_init(pro_d->printing_mutex, NULL) != 0)
-	{
-		ft_putstr_fd("Error while initializing one of the mutexes\n", 2);
-		return (0);
-	}
-	if (pthread_mutex_init(pro_d->death, NULL) != 0)
+	if (pthread_mutex_init(pro_d->printing_mutex, NULL) != 0
+		|| pthread_mutex_init(pro_d->death, NULL) != 0
+		|| pthread_mutex_init(pro_d->greedy_mutex, NULL) != 0)
 	{
 		ft_putstr_fd("Error while initializing one of the mutexes\n", 2);
 		return (0);
