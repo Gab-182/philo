@@ -6,13 +6,13 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 06:14:28 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/09 15:18:14 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 16:08:55 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_greedy(t_ph_d *ph_d)
+int	check_greedy_even(t_ph_d *ph_d)
 {
 	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
@@ -21,6 +21,23 @@ int	check_greedy(t_ph_d *ph_d)
 	{
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+		return (1);
+	}
+	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
+	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+	return (0);
+}
+
+/*============================================================================*/
+int	check_greedy_odd(t_ph_d *ph_d)
+{
+	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
+	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
+	if (ph_d->pro_d->greedy_forks[ph_d->left_fork] == ph_d->philo_pos
+		|| ph_d->pro_d->greedy_forks[ph_d->right_fork] == ph_d->philo_pos)
+	{
+		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 		return (1);
 	}
 	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);

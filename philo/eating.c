@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 04:45:35 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/09 15:21:54 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 16:13:09 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	one_way(t_ph_d *ph_d)
 {
 	if (!still_alive(ph_d))
 		return (0);
-	if (!check_greedy(ph_d))
+	if (!check_greedy_odd(ph_d))
 	{
 		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
 		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
@@ -92,7 +92,7 @@ static int	other_way(t_ph_d *ph_d)
 {
 	if (!still_alive(ph_d))
 		return (0);
-	if (!check_greedy(ph_d))
+	if (!check_greedy_even(ph_d))
 	{
 		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
 		pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);

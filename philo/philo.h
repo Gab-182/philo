@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:00 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/09 15:18:32 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/09 16:13:58 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void			move_to_struct(char **argv, t_pro_d *pro_d);
 int				eating(t_ph_d *ph_d);
 
 /*---------------------   philo_routine.c   ----------------------------------*/
-int				check_greedy(t_ph_d *ph_d);
+int				check_greedy_even(t_ph_d *ph_d);
+int				check_greedy_odd(t_ph_d *ph_d);
 int				still_alive(t_ph_d *ph_d);
 int				sleeping_thinking(t_ph_d *ph_d);
 void			*philo_routine(void *arg);
