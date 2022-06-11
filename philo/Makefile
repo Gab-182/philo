@@ -6,7 +6,7 @@
 #    By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 19:41:47 by gabdoush          #+#    #+#              #
-#    Updated: 2022/06/06 04:43:35 by gabdoush         ###   ########.fr        #
+#    Updated: 2022/06/11 12:31:36 by gabdoush         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ FILES = philo_utils_libft.c\
 		philo_routine.c\
 		philo_utils.c\
 		eating.c\
+		action.c\
 		philo.c\
 		main.c
 

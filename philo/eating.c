@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 04:45:35 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/09 16:13:09 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/11 12:40:38 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@
  * @param ph_d 
  * @param flag 
  */
-static void	start_eating(t_ph_d *ph_d, int flag)
+static int	start_eating(t_ph_d *ph_d, int flag)
 {
 	ph_d->pro_d->forks_state[ph_d->right_fork] = ph_d->philo_pos;
 	ph_d->pro_d->forks_state[ph_d->left_fork] = ph_d->philo_pos;
+	if (!still_alive(ph_d))
+		return (0);
 	printing_state(ph_d, ": has taken a fork 🍴", Y);
 	printing_state(ph_d, ": has taken a fork 🍴🍴", Y);
 	printing_state(ph_d, ": is eating 🍝", G);
@@ -38,8 +40,11 @@ static void	start_eating(t_ph_d *ph_d, int flag)
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	}
 	ph_d->last_eating = action_time();
-	usleep_pro(ph_d->pro_d->time_to_eat);
+	usleep_pro(ph_d->pro_d->time_to_eat, ph_d);
+	if (!still_alive(ph_d))
+		return (0);
 	ph_d->meals++;
+	return (1);
 }
 
 /*============================================================================*/
@@ -48,8 +53,10 @@ static void	start_eating(t_ph_d *ph_d, int flag)
  * 
  * @param ph_d 
  */
-static void	return_forks(t_ph_d *ph_d)
+int	return_forks(t_ph_d *ph_d)
 {
+	if (!still_alive(ph_d))
+		return (0);
 	handle_greedy_philo_eat(ph_d);
 	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	ph_d->pro_d->forks_state[ph_d->left_fork] = 0;
@@ -57,6 +64,9 @@ static void	return_forks(t_ph_d *ph_d)
 	pthread_mutex_lock(&ph_d->pro_d->forks[ph_d->right_fork]);
 	ph_d->pro_d->forks_state[ph_d->right_fork] = 0;
 	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+	if (!still_alive(ph_d))
+		return (0);
+	return (1);
 }
 
 /*============================================================================*/
@@ -71,9 +81,11 @@ static int	one_way(t_ph_d *ph_d)
 		if (ph_d->pro_d->forks_state[ph_d->right_fork] == 0
 			&& ph_d->pro_d->forks_state[ph_d->left_fork] == 0)
 		{
-			start_eating(ph_d, 1);
-			return_forks(ph_d);
-			if (!sleeping_thinking(ph_d))
+			if (!start_eating(ph_d, 1))
+				return (0);
+			if (!still_alive(ph_d))
+				return (0);
+			if (!after_eating_sleeping_thinking(ph_d))
 				return (0);
 		}
 		else
@@ -99,9 +111,11 @@ static int	other_way(t_ph_d *ph_d)
 		if (ph_d->pro_d->forks_state[ph_d->right_fork] == 0
 			&& ph_d->pro_d->forks_state[ph_d->left_fork] == 0)
 		{
-			start_eating(ph_d, 2);
-			return_forks(ph_d);
-			if (!sleeping_thinking(ph_d))
+			if (!start_eating(ph_d, 2))
+				return (0);
+			if (!still_alive(ph_d))
+				return (0);
+			if (!after_eating_sleeping_thinking(ph_d))
 				return (0);
 		}
 		else

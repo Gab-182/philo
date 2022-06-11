@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 06:14:28 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/09 16:08:55 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/11 13:07:52 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,16 @@ int	still_alive(t_ph_d *ph_d)
 	}
 	pthread_mutex_unlock(ph_d->pro_d->death);
 	from_last_meal = action_time() - ph_d->last_eating;
+	pthread_mutex_lock(ph_d->pro_d->death);
 	if (from_last_meal >= ph_d->pro_d->time_to_die
 		&& ph_d->pro_d->stop == 0)
 	{
-		pthread_mutex_lock(ph_d->pro_d->death);
 		printing_state(ph_d, ": died Xx*___💀💀💀___*xX", R);
 		ph_d->pro_d->stop = 1;
 		pthread_mutex_unlock(ph_d->pro_d->death);
 		return (0);
 	}
+	pthread_mutex_unlock(ph_d->pro_d->death);
 	return (1);
 }
 
@@ -88,7 +89,7 @@ int	sleeping_thinking(t_ph_d *ph_d)
 	if (!still_alive(ph_d))
 		return (0);
 	printing_state(ph_d, ": is sleeping 💤", B);
-	usleep_pro(ph_d->pro_d->time_to_sleep);
+	usleep_pro(ph_d->pro_d->time_to_sleep, ph_d);
 	if (!still_alive(ph_d))
 		return (0);
 	printing_state(ph_d, ": is thinking 🧠", P);
