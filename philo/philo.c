@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:08 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/11 13:07:02 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/12 10:00:21 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	init_philosophers_data(t_ph_d *ph_d, int i)
 	ph_d->philo_pos = i + 1;
 	ph_d->req_meals = ph_d->pro_d->meals_to_eat;
 	ph_d->meals = 0;
+	ph_d->panic = 0;
 	ph_d->left_fork = i;
 	ph_d->right_fork = (i + 1) % ph_d->pro_d->philos_num;
 }

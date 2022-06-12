@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:00 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/11 16:45:19 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/12 10:07:27 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_ph_d
 	int				right_fork;
 	int				req_meals;
 	int				meals;
+	int				panic;
 }			t_ph_d;
 
 /*-----------------------   Program Data   -----------------------------------*/
@@ -78,7 +79,7 @@ int				ft_atoi(const char *str);
 void			ft_putstr_fd(char *s, int fd);
 
 /*----------------------   philo_utils.c   -----------------------------------*/
-void			usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d);
+int				usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d);
 unsigned int	action_time(void);
 void			destroy_free(t_pro_d *pro_d);
 void			printing_state(t_ph_d *ph_d, char *state, char *color);
@@ -99,7 +100,7 @@ void			return_forks(t_ph_d *ph_d);
 int				check_greedy_even(t_ph_d *ph_d);
 int				check_greedy_odd(t_ph_d *ph_d);
 int				still_alive(t_ph_d *ph_d);
-int				sleeping_thinking(t_ph_d *ph_d);
+int				sleeping(t_ph_d *ph_d);
 void			*philo_routine(void *arg);
 
 /*============================================================================*/

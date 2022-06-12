@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 10:26:15 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/11 13:40:35 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/12 10:07:50 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	printing_state(t_ph_d *ph_d, char *state, char *color)
  * 
  * @param time_to_delay 
  */
-void	usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d)
+int	usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d)
 {
 	unsigned int	now_time;
 
@@ -48,9 +48,10 @@ void	usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d)
 	while ((action_time() - now_time) < (time_to_delay))
 	{
 		if (!still_alive(ph_d))
-			break ;
+			return (0);
 		usleep(time_to_delay / 100);
 	}
+	return (1);
 }
 
 /*============================================================================*/

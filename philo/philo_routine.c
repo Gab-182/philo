@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 06:14:28 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/11 17:16:18 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/12 10:19:35 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	still_alive(t_ph_d *ph_d)
 	pthread_mutex_lock(ph_d->pro_d->death);
 	if (ph_d->pro_d->stop != 0 || ph_d->meals == ph_d->req_meals)
 	{
+		ph_d->panic = 1;
 		pthread_mutex_unlock(ph_d->pro_d->death);
 		return (0);
 	}
@@ -68,8 +69,10 @@ int	still_alive(t_ph_d *ph_d)
 	if (from_last_meal >= ph_d->pro_d->time_to_die
 		&& ph_d->pro_d->stop == 0)
 	{
-		printing_state(ph_d, ": died Xx*___💀💀💀___*xX", R);
 		ph_d->pro_d->stop = 1;
+		usleep(1000);
+		printing_state(ph_d, ": died Xx*___💀💀💀___*xX", R);
+		ph_d->panic = 1;
 		pthread_mutex_unlock(ph_d->pro_d->death);
 		return (0);
 	}
@@ -84,15 +87,21 @@ int	still_alive(t_ph_d *ph_d)
  * @param ph_d 
  * @return int 
  */
-int	sleeping_thinking(t_ph_d *ph_d)
+int	sleeping(t_ph_d *ph_d)
 {
 	if (!still_alive(ph_d))
+	{
+		ph_d->panic = 1;
 		return (0);
+	}
 	printing_state(ph_d, ": is sleeping 💤", B);
-	usleep_pro(ph_d->pro_d->time_to_sleep, ph_d);
-	if (!still_alive(ph_d))
+	if (usleep_pro(ph_d->pro_d->time_to_sleep, ph_d))
 		return (0);
-	printing_state(ph_d, ": is thinking 🧠", P);
+	if (!still_alive(ph_d))
+	{
+		ph_d->panic = 1;
+		return (0);
+	}
 	return (1);
 }
 
@@ -108,13 +117,18 @@ void	*philo_routine(void *arg)
 
 	ph_d = (t_ph_d *)arg;
 	ph_d->last_eating = action_time();
-	while (ph_d->meals != ph_d->req_meals)
+	while (ph_d->meals != ph_d->req_meals && !ph_d->panic)
 	{
 		pthread_mutex_lock(ph_d->pro_d->death);
 		if (!ph_d->pro_d->stop)
 		{
 			pthread_mutex_unlock(ph_d->pro_d->death);
-			if (!eating(ph_d))
+			if (eating(ph_d))
+			{
+				if (sleeping(ph_d))
+					printing_state(ph_d, ": is thinking 🧠", P);
+			}
+			else
 				return (NULL);
 		}
 		else
