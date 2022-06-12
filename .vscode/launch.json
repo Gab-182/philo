@@ -6,11 +6,11 @@
 			"name": "gcc - Build and debug active file",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "/Users/gabdoush/Desktop/philos/philo",
+			"program": "/Users/gabdoush/Desktop/philo/philo/philo",
 			"args": ["4", "310000000", "200", "100"],
 			"stopAtEntry": false,
 			"externalConsole": false,
-			"cwd": "/Users/gabdoush/Desktop/philos",
+			"cwd": "/Users/gabdoush/Desktop/philo/philo",
 			"logging": {
 				"moduleLoad": true,
 				"trace": false ,
