@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 10:26:15 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/13 04:47:16 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 09:09:53 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	printing_state(t_ph_d *ph_d, char *state, char *color)
 	unsigned int	start_time;
 
 	start_time = ph_d->pro_d->start_time;
+	pthread_mutex_lock(ph_d->pro_d->death);
 	pthread_mutex_lock(ph_d->pro_d->printing_mutex);
 	if (!ph_d->panic && !ph_d->pro_d->stop
 		&& ph_d->meals != ph_d->pro_d->meals_to_eat)
@@ -36,6 +37,7 @@ void	printing_state(t_ph_d *ph_d, char *state, char *color)
 			ph_d->philo_pos, state);
 	}
 	pthread_mutex_unlock(ph_d->pro_d->printing_mutex);
+	pthread_mutex_unlock(ph_d->pro_d->death);
 }
 
 /*============================================================================*/
@@ -49,12 +51,10 @@ int	usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d)
 	unsigned int	now_time;
 
 	now_time = action_time();
+	if (!still_alive(ph_d))
+		return (0);
 	while ((action_time() - now_time) < (time_to_delay))
-	{
-		if (!still_alive(ph_d))
-			return (0);
 		usleep(time_to_delay / 100);
-	}
 	return (1);
 }
 
