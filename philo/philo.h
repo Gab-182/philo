@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:00 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/13 09:01:27 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:33:54 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define MIN_DIE_T 60
 # define MIN_THINK_T 60
 # define MIN_SLEEP_T 60
+# define INT_MAX 2147483647
 
 /*----------------* COLORES *-----------------*/
 # define R "\033[0;31m"

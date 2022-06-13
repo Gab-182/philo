@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 10:26:15 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/13 09:09:53 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:40:09 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ int	usleep_pro(unsigned int time_to_delay, t_ph_d *ph_d)
 	if (!still_alive(ph_d))
 		return (0);
 	while ((action_time() - now_time) < (time_to_delay))
-		usleep(time_to_delay / 100);
+	{
+		if (!still_alive(ph_d))
+			return (0);
+		usleep(100);
+	}
 	return (1);
 }
 

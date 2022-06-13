@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 21:35:53 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/06 06:36:33 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:36:58 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	check_valid_integer(char **argv)
 	}
 	if (ft_atoi(argv[4]) < MIN_SLEEP_T || ft_atoi(argv[3]) < MIN_EAT_T)
 	{
-		ft_putstr_fd("Wrong arguments, Sleeping or eating time is small.\n", 2);
+		ft_putstr_fd("Wrong arguments, Wrong time.\n", 2);
 		return (0);
 	}
 	return (1);
