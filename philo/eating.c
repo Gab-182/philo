@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 04:45:35 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/13 01:37:59 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 03:53:18 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ static int	start_eating(t_ph_d *ph_d, int flag)
 {
 	ph_d->pro_d->forks_state[ph_d->right_fork] = ph_d->philo_pos;
 	ph_d->pro_d->forks_state[ph_d->left_fork] = ph_d->philo_pos;
+	if (!still_alive(ph_d))
+		return (0);
+	printing_state(ph_d, ": has taken a fork 🍴", Y);
+	printing_state(ph_d, ": has taken a fork 🍴🍴", Y);
+	printing_state(ph_d, ": is eating 🍝", G);
+	ph_d->last_eating = action_time();
 	if (flag == 1)
 	{
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
@@ -34,12 +40,6 @@ static int	start_eating(t_ph_d *ph_d, int flag)
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	}
-	if (!still_alive(ph_d))
-		return (0);
-	printing_state(ph_d, ": has taken a fork 🍴", Y);
-	printing_state(ph_d, ": has taken a fork 🍴🍴", Y);
-	printing_state(ph_d, ": is eating 🍝", G);
-	ph_d->last_eating = action_time();
 	if (!usleep_pro(ph_d->pro_d->time_to_eat, ph_d))
 		return (0);
 	ph_d->meals++;
@@ -76,6 +76,8 @@ static int	one_way(t_ph_d *ph_d)
 			if (!start_eating(ph_d, 1))
 				return (0);
 			return_forks(ph_d);
+			if (!sleeping(ph_d))
+				return (0);
 			return (1);
 		}
 		else
@@ -86,7 +88,7 @@ static int	one_way(t_ph_d *ph_d)
 				return (0);
 		}
 	}
-	return (2);
+	return (1);
 }
 
 /*============================================================================*/
@@ -102,6 +104,8 @@ static int	other_way(t_ph_d *ph_d)
 			if (!start_eating(ph_d, 2))
 				return (0);
 			return_forks(ph_d);
+			if (!sleeping(ph_d))
+				return (0);
 			return (1);
 		}
 		else
@@ -112,35 +116,21 @@ static int	other_way(t_ph_d *ph_d)
 				return (0);
 		}
 	}
-	return (2);
+	return (1);
 }
 
 /*============================================================================*/
 int	eating(t_ph_d *ph_d)
 {
-	int	eating1;
-
 	if (ph_d->philo_pos % 2 != 0)
 	{
-		eating1 = one_way(ph_d);
-		if (eating1 == 0)
+		if (one_way(ph_d) == 0)
 			return (0);
-		else if (eating1 == 1)
-		{
-			if (!sleeping(ph_d))
-				return (0);
-		}
 	}
-	else if (ph_d->philo_pos % 2 == 0)
+	else
 	{
-		eating1 = other_way(ph_d);
-		if (eating1 == 0)
+		if (other_way(ph_d) == 0)
 			return (0);
-		else if (eating1 == 1)
-		{
-			if (!sleeping(ph_d))
-				return (0);
-		}
 	}
 	return (1);
 }

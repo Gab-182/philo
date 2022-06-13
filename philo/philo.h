@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:00 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/12 10:07:27 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 03:44:31 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_ph_d
 	int				philo_pos;
 	int				left_fork;
 	int				right_fork;
-	int				req_meals;
 	int				meals;
 	int				panic;
 }			t_ph_d;

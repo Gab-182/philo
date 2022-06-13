@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 10:26:15 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/13 01:34:32 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 04:47:16 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ void	printing_state(t_ph_d *ph_d, char *state, char *color)
 
 	start_time = ph_d->pro_d->start_time;
 	pthread_mutex_lock(ph_d->pro_d->printing_mutex);
-	if (!ph_d->panic && !ph_d->pro_d->stop && ph_d->meals != ph_d->req_meals)
+	if (!ph_d->panic && !ph_d->pro_d->stop
+		&& ph_d->meals != ph_d->pro_d->meals_to_eat)
+	{	
 		printf("%s\033[1m %d [%d] %s\n", color, (action_time() - start_time),
 			ph_d->philo_pos, state);
+	}
 	pthread_mutex_unlock(ph_d->pro_d->printing_mutex);
 }
 

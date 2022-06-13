@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 06:14:28 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/13 01:22:55 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 04:46:48 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	check_greedy_even(t_ph_d *ph_d)
 	if (ph_d->pro_d->greedy_forks[ph_d->left_fork] == ph_d->philo_pos
 		|| ph_d->pro_d->greedy_forks[ph_d->right_fork] == ph_d->philo_pos)
 	{
-		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 		return (1);
 	}
-	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
+	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
 	return (0);
 }
 
@@ -36,8 +36,8 @@ int	check_greedy_odd(t_ph_d *ph_d)
 	if (ph_d->pro_d->greedy_forks[ph_d->left_fork] == ph_d->philo_pos
 		|| ph_d->pro_d->greedy_forks[ph_d->right_fork] == ph_d->philo_pos)
 	{
-		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
 		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
+		pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->right_fork]);
 		return (1);
 	}
 	pthread_mutex_unlock(&ph_d->pro_d->forks[ph_d->left_fork]);
@@ -57,7 +57,7 @@ int	still_alive(t_ph_d *ph_d)
 	unsigned int	from_last_meal;
 
 	pthread_mutex_lock(ph_d->pro_d->death);
-	if (ph_d->pro_d->stop != 0 || ph_d->meals == ph_d->req_meals)
+	if (ph_d->pro_d->stop != 0 || ph_d->meals == ph_d->pro_d->meals_to_eat)
 	{
 		ph_d->panic = 1;
 		pthread_mutex_unlock(ph_d->pro_d->death);
@@ -109,13 +109,13 @@ void	*philo_routine(void *arg)
 
 	ph_d = (t_ph_d *)arg;
 	ph_d->last_eating = action_time();
-	while (ph_d->meals != ph_d->req_meals && !ph_d->panic)
+	while (ph_d->meals != ph_d->pro_d->meals_to_eat && !ph_d->panic)
 	{
 		pthread_mutex_lock(ph_d->pro_d->death);
 		if (!ph_d->pro_d->stop)
 		{
 			pthread_mutex_unlock(ph_d->pro_d->death);
-			if (eating(ph_d) == 0)
+			if (!eating(ph_d))
 				return (NULL);
 		}
 		else

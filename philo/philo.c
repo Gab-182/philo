@@ -6,7 +6,7 @@
 /*   By: gabdoush <gabdoush@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 19:42:08 by gabdoush          #+#    #+#             */
-/*   Updated: 2022/06/12 10:00:21 by gabdoush         ###   ########.fr       */
+/*   Updated: 2022/06/13 03:45:56 by gabdoush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	allocate_memory(t_pro_d *pro_d)
 	pro_d->greedy_forks = ft_calloc(sizeof(int), pro_d->philos_num);
 	if (!pro_d->ph_d || !pro_d->philo_thread || !pro_d->greedy_forks
 		|| !pro_d->forks || !pro_d->printing_mutex || !pro_d->greedy_mutex
-		|| !pro_d->death ||!pro_d->forks_state)
+		|| !pro_d->death || !pro_d->forks_state)
 	{
 		ft_putstr_fd("Allocation failed\n", 2);
 		return (0);
@@ -79,7 +79,6 @@ static int	initialize_forks_mutexes(t_pro_d *pro_d)
 static void	init_philosophers_data(t_ph_d *ph_d, int i)
 {
 	ph_d->philo_pos = i + 1;
-	ph_d->req_meals = ph_d->pro_d->meals_to_eat;
 	ph_d->meals = 0;
 	ph_d->panic = 0;
 	ph_d->left_fork = i;
