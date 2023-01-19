@@ -7,6 +7,13 @@ Apply the basics of threading a process.  Creating threads and discover mutexes.
 their left side and a fork on their right side.  If there is only one philosopher, there should be only one fork on the table.
 3. To prevent philosophers from duplicating forks, you should protect the forks state with a mutex for each of them
 
+<p align="center">
+	<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Gab-182/philo?color=lightblue" />
+	<img alt="Code language count" src="https://img.shields.io/github/languages/count/Gab-182/philo?color=yellow" />
+	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Gab-182/philo?color=red" />
+	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Gab-182/philo?color=green" />
+</p>
+
 # Resources
 
 ### General:
